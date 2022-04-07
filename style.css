@@ -3,7 +3,9 @@
   padding: 0;
   box-sizing: inherit;
 }
-
+body {
+  background-color: rgba(137, 43, 226, 0.144);
+}
 html {
   font-size: 62.5%;
   box-sizing: border-box;
@@ -27,8 +29,11 @@ html {
 select {
   width: 100%;
   height: 10%;
+  background-color: bisque;
+  font-size: 2rem;
 }
 input {
+  border: none;
   padding-bottom: 50%;
   width: 100%;
   font-size: 2rem;

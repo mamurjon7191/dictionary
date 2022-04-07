@@ -50,29 +50,66 @@ let input1 = document.querySelector(".input1");
 let input2 = document.querySelector(".input2");
 
 input1.focus();
-const encodedParams = new URLSearchParams();
-encodedParams.append("q", "Hello, my world I love you !");
-encodedParams.append("target", "ru");
-encodedParams.append("source", "en");
+let a;
+let lang = function () {
+  const encodedParams = new URLSearchParams();
+  encodedParams.append("q", "Hello, world!");
+  encodedParams.append("target", "es");
+  encodedParams.append("source", "en");
 
-const options = {
-  method: "POST",
-  headers: {
-    "content-type": "application/x-www-form-urlencoded",
-    "Accept-Encoding": "application/gzip",
-    "X-RapidAPI-Host": "google-translate1.p.rapidapi.com",
-    "X-RapidAPI-Key": "c645510d69msha399047b649c2b1p1b85dbjsn8531fb6c7dc4",
-  },
-  body: encodedParams,
+  const options = {
+    method: "POST",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      "Accept-Encoding": "application/gzip",
+      "X-RapidAPI-Host": "google-translate1.p.rapidapi.com",
+      "X-RapidAPI-Key": "968eebc5f3mshb49fccc8305d273p164495jsn40395bd1cdf1",
+    },
+    body: encodedParams,
+  };
+
+  fetch(
+    "https://google-translate1.p.rapidapi.com/language/translate/v2/languages",
+    options
+  )
+    .then((response) => response.json())
+    .then((response) =>
+      response.data.languages.forEach((element) => {
+        let html = `<option value="${element.language}">${element.language}</option>;`;
+        select1.insertAdjacentHTML("beforeend", html);
+        select2.insertAdjacentHTML("beforeend", html);
+      })
+    )
+    .catch((err) => console.error(err));
 };
 
-function convert() {
+lang();
+
+btn.addEventListener("click", function () {
+  const encodedParams = new URLSearchParams();
+  encodedParams.append("q", input1.value);
+  encodedParams.append("target", select2.value);
+  encodedParams.append("source", select1.value);
+
+  const options = {
+    method: "POST",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      "Accept-Encoding": "application/gzip",
+      "X-RapidAPI-Host": "google-translate1.p.rapidapi.com",
+      "X-RapidAPI-Key": "968eebc5f3mshb49fccc8305d273p164495jsn40395bd1cdf1",
+    },
+    body: encodedParams,
+  };
+
   fetch(
     "https://google-translate1.p.rapidapi.com/language/translate/v2",
     options
   )
     .then((response) => response.json())
-    .then((response) => console.log(response))
+    .then(
+      (response) =>
+        (input2.value = response.data.translations[0].translatedText)
+    )
     .catch((err) => console.error(err));
-}
-convert();
+});
